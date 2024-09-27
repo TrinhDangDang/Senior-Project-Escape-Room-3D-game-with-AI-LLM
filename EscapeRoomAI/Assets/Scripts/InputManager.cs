@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour // MonoBehavior is a base class in Uni
 {
     // Start is called before the first frame update
     private PlayerInput playerInput;
-    private PlayerInput.OnFootActions onFoot;
+    public PlayerInput.OnFootActions onFoot;
     private PlayerMotor motor;
     private PlayerLook look;
 
