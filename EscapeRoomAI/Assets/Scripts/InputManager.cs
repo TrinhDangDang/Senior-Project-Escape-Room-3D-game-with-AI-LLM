@@ -10,13 +10,14 @@ public class InputManager : MonoBehaviour // MonoBehavior is a base class in Uni
     public PlayerInput.OnFootActions onFoot;
     private PlayerMotor motor;
     private PlayerLook look;
+    [HideInInspector] public bool playerCanMove = true; // Used to prevent player movement during interactions
 
     void Awake() //special Unity MonoBehaviour method that is called when the script instance is being loaded
     {
         playerInput = new PlayerInput(); //create a new instance of the pLAYERiNPUT CLASS
         onFoot = playerInput.OnFoot;
 
-        motor = GetComponent<PlayerMotor>(); // fetches the PlayerMotor component attached to the same GameObject, after getting the reference tot he PlayerMotor, you cna call methods from the PlayerMotor script, such as ProcessMove()
+        motor = GetComponent<PlayerMotor>(); // fetches the PlayerMotor component attached to the same GameObject, after getting the reference to the PlayerMotor, you can call methods from the PlayerMotor script, such as ProcessMove()
         look = GetComponent<PlayerLook>();
         onFoot.Jump.performed += ctx => motor.Jump();
 
@@ -27,12 +28,16 @@ public class InputManager : MonoBehaviour // MonoBehavior is a base class in Uni
 
     void FixedUpdate()
     {
-        motor.ProcessMove(onFoot.Movement.ReadValue<Vector2>()); // onFoot contains various input actions related to player movement; ReadValue<Vector2>(): this function reads the current value of the Movement input as a Vector2 which contains two components: x and y.
+        if (playerCanMove){
+            motor.ProcessMove(onFoot.Movement.ReadValue<Vector2>()); // onFoot contains various input actions related to player movement; ReadValue<Vector2>(): this function reads the current value of the Movement input as a Vector2 which contains two components: x and y.
+        }
     }
     // Update is called once per frame
     void LateUpdate()
     {
-        look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        if (playerCanMove){
+            look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        }
     }
     
     private void OnEnable() // enable the OnFoot action map when GameObject is activated
