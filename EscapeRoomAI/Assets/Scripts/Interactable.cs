@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
     public string promptMessage; //message that displays when interacted
     public string objectName; //Name of object
