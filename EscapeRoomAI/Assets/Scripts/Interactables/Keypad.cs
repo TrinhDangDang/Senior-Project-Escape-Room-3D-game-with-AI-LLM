@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Keypad : Interactable
 {
-   // new objectName = "keypad Placeholder";
+    private GameObject player; // Reference to the player object
+    
     // Start is called before the first frame update
     void Start()
     {
-        objectName = "Keypad 1";
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -18,6 +19,6 @@ public class Keypad : Interactable
     }
     protected override void Interact()
     {
-        Debug.Log("Interacted with: "+ objectName);
+        Debug.Log("Interacted with: "+ gameObject.name);
     }
 }
