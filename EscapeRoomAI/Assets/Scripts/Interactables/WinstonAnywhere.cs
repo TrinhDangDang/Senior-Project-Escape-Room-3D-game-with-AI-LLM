@@ -54,16 +54,16 @@ public async Task<List<DialogueItem>> GetDialogueAsync()
 {
     string GameContext = GM.GenerateGameContext(); //Get Game context from GM
  
-    var WinstonMessage = await LLM.SendMessageToWinston(GameContext);
-    string Message = WinstonMessage;
-    UnityEngine.Debug.Log(Message);
+   // var WinstonMessage = await LLM.SendMessageToWinston(GameContext);
+    //string Message = WinstonMessage;
+   // UnityEngine.Debug.Log(Message);
 
     return new List<DialogueItem>()
     {
         new DialogueItem() { name = "Prof. Winston", picture = dialogueIcon },
         new DialogueItem() { text = "Hello! My name is professor Winston" },
         new DialogueItem() { text = "What can I help you with today?" },
-        new DialogueItem() { text = Message},
+        new DialogueItem() { text = GameContext},
         new DialogueItem() { action = () => { playerIM.playerCanMove = true; } }
     };
 }

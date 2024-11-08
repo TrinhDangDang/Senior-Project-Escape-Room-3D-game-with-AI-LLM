@@ -66,6 +66,7 @@ public class GameMaster : MonoBehaviour
                 null, null // Only 4 states for this puzzle
             }
         };
+        contextCache = puzzleContexts[0,0];
     }
 
     // Update is called once per frame
