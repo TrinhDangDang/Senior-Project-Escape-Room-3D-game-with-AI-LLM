@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks; 
 
 public class WinstonAnywhere : Interactable, Dialoguer
 
 {
-    private GameObject player; // reference to the player object
+    private GameObject player; // Reference to the player object
     public Sprite dialogueIcon;
-    private InputManager playerIM; // reference to the player object
-    // Start is called before the first frame update
+    private InputManager playerIM; // Reference to the player's input manager
+    private GameObject ChatObject;
+    private GameObject GameMasterObject;  
+    private LLMHandler LLM;
+    private GameMaster GM;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerIM = player.GetComponent<InputManager>();
+
+        ChatObject = GameObject.FindGameObjectWithTag("LLMObj");
+        LLM = ChatObject.GetComponent<LLMHandler>();
+        
+        GameMasterObject = GameObject.FindGameObjectWithTag("GameMasterObj");
+        GM = GameMasterObject.GetComponent<GameMaster>();
     }
 
     // Update is called once per frame
@@ -24,7 +36,7 @@ public class WinstonAnywhere : Interactable, Dialoguer
     {
         // set playerCanMove to false, complete talking interaction, then set it back to true 
         if (playerIM.playerCanMove){
-            playerIM.playerCanMove = false;
+           playerIM.playerCanMove = false;
             Dialogue.OpenDialogue(this);
         }
     }
@@ -33,16 +45,27 @@ public class WinstonAnywhere : Interactable, Dialoguer
         Debug.Log(str);
     }
 
-    public List<DialogueItem> getDialogue()
+public List<DialogueItem> getDialogue()
+{   
+    return GetDialogueAsync().Result;
+}
+
+public async Task<List<DialogueItem>> GetDialogueAsync()
+{
+    string GameContext = GM.GenerateGameContext(); //Get Game context from GM
+ 
+    var WinstonMessage = await LLM.SendMessageToWinston(GameContext);
+    string Message = WinstonMessage;
+    UnityEngine.Debug.Log(Message);
+
+    return new List<DialogueItem>()
     {
-        return new List<DialogueItem>(){
-                new DialogueItem(){name="Prof. Winston", picture=dialogueIcon},
-                new DialogueItem(){text="Hello! My name is professor Winston"},
-                new DialogueItem(){text="What can I help you with today?"},
-                new DialogueItem(){text="ABRAKADABRA!", action=()=>{Talk(player.name+ " performed action talking with: "+ gameObject.name);}},
-                new DialogueItem(){text="I just did magic to write to your Console Log"},
-                new DialogueItem(){text="To solve the puzzles, you must use your own intelligence... mine is artificial!"},
-                new DialogueItem(){action=()=>{playerIM.playerCanMove = true;}}
-                };
-    }
+        new DialogueItem() { name = "Prof. Winston", picture = dialogueIcon },
+        new DialogueItem() { text = "Hello! My name is professor Winston" },
+        new DialogueItem() { text = "What can I help you with today?" },
+        new DialogueItem() { text = Message},
+        new DialogueItem() { action = () => { playerIM.playerCanMove = true; } }
+    };
+}
+
 }

@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 public class LLMHandler : MonoBehaviour
 {
-    private static readonly string apiKey = "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";
+    private static readonly string apiKey = "";
 
 
     void Start()
@@ -24,11 +24,20 @@ public class LLMHandler : MonoBehaviour
     {
         var prompt = "Ignore all previous instructions. You are Professor Winston, a wise and eccentric wizard known for your mastery of ancient magic and puzzles. You will provide hints to a player to escape a room in your wizard tower.";
         var response = await GetChatGPTResponse(prompt);
-        UnityEngine.Debug.Log("Assistant Response: " + response);
+     //UnityEngine.Debug.Log("Assistant Response: " + response);
 
     }
 
     // Main method
+   public async Task<string> SendMessageToWinston(string prompt)
+   {
+
+        var response = await GetChatGPTResponse(prompt);
+
+        return response;
+        //UnityEngine.Debug.Log("Assistant Response: " + response);
+
+   }
     public static async Task<string> GetChatGPTResponse(string prompt)
     {
         using (var client = new HttpClient())

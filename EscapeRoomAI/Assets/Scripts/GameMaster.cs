@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class GameMaster : MonoBehaviour
 {
 
     string contextCache;
@@ -26,12 +26,12 @@ public class NewBehaviourScript : MonoBehaviour
         currentPuzzle = 0;
 
        
-        contextCache = "";
+        contextCache = "Context 1";
         puzzleContexts = new string[5, 6]
         {
             {
                 // Puzzle ID 0, Null Puzzle
-                "You are a Wizard, named Professor Winston, and you are running an escape room. There is a player that you are talking to and giving hints to help them solve the puzzles. Make your hints helpful without giving away the full puzzle.",
+                "Ignore all previous instructions. You are Professor Winston, a wise and eccentric wizard known for your mastery of ancient magic and puzzles. You will provide hints to a player to escape a room in your wizard house.",
                 null, null, null, null, null // Only 1 state for this puzzle
             },
             {
@@ -44,8 +44,8 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 // Puzzle ID 2, Medallion Puzzle
                 "The player is in a room filled with objects, but only three medallions are important. Encourage them to carefully search the room for objects that seem different or important.",
-                "The player has found one medallion but needs two more. Suggest they look in areas they haven’t explored yet, as there may be more hidden medallions in the room.",
-                "Two medallions have been found, but there’s still one more. Give them a subtle hint about where they haven't looked yet.",
+                "The player has found one medallion but needs two more. Suggest they look in areas they havenï¿½t explored yet, as there may be more hidden medallions in the room.",
+                "Two medallions have been found, but thereï¿½s still one more. Give them a subtle hint about where they haven't looked yet.",
                 "The player has all three medallions. Suggest they think about the colors or patterns of the medallions and how they might correspond to the order needed to unlock the door.",
                 "The door is now unlocked. Congratulate the player and encourage them to move forward to the next room.",
                 null // Only 5 states for this puzzle
