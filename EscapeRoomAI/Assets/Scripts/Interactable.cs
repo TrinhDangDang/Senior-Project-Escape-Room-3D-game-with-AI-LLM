@@ -12,7 +12,7 @@ public class Interactable : MonoBehaviour
 
     public bool isPuzzleElement; //does this belong to a puzzle?
     public int puzzleCode; //What puzzle does this belong to?
-   
+
 
     void Start() //init function
     {
