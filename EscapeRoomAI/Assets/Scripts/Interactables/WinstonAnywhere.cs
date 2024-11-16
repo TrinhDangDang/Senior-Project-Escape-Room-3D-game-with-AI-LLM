@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class WinstonAnywhere : Interactable, Dialoguer
+public class WinstonAnywhere : MonoBehaviour, Dialoguer
 {
     private GameObject player;
     public Sprite dialogueIcon;
@@ -17,6 +17,9 @@ public class WinstonAnywhere : Interactable, Dialoguer
     private GameObject GameMasterObject;
     private LLMHandler LLM;
     private GameMaster GM;
+
+    [Header("Trigger Settings")]
+    [SerializeField] private KeyCode triggerKey = KeyCode.T; // Key to trigger Winston dialogue
 
     void Start()
     {
@@ -30,9 +33,18 @@ public class WinstonAnywhere : Interactable, Dialoguer
         GM = GameMasterObject?.GetComponent<GameMaster>();
     }
 
-    protected override void Interact()
+    void Update()
     {
-        if (playerIM.playerCanMove)
+        // Trigger dialogue on key press
+        if (Input.GetKeyDown(triggerKey))
+        {
+            TriggerDialogue();
+        }
+    }
+
+    private void TriggerDialogue()
+    {
+        if (playerIM != null && playerIM.playerCanMove)
         {
             playerIM.playerCanMove = false;
             Dialogue.OpenDialogue(this);
@@ -42,7 +54,7 @@ public class WinstonAnywhere : Interactable, Dialoguer
     public async Task<List<DialogueItem>> getDialogue()
     {
         string gameContext = GM?.GenerateGameContext() ?? "Default game context";
-        // add in 
+        // Generate dialogue dynamically using the LLM
         string winstonMessage = await (LLM?.SendMessageToWinston("This is the current Game state:  " + gameContext) ?? Task.FromResult("Error retrieving message from LLM."));
 
         return new List<DialogueItem>()
